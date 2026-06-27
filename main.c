@@ -10,6 +10,52 @@ typedef struct {
     float expense;
 } amounts;
 
+void CleanUp() {
+    FILE *fptr = fopen("list.txt", "w");
+    fclose(fptr);
+
+    printf("\n History cleared.");
+}
+
+void ReadList() {
+        char myString[200];
+        FILE *fptr = fopen("list.txt", "r");
+
+        if (fptr == NULL){
+            printf("No Existing file to read. \n");
+        } else {
+
+            while(fgets(myString, 200, fptr)) {
+                printf("%s \n", myString);
+            }
+            fclose(fptr);
+        }
+    }
+
+void AddingNewList(amounts*ptr, int n, int times) {
+
+    
+    for (times = 0; times < n; times++)
+    {
+        printf("Enter %d Name : ", times+1);
+        scanf("%s", ptr[times].name);
+
+        printf("Enter %d Expense : ", times+1);
+        scanf("%f", &ptr[times].expense);
+    }
+}
+
+void WritingNewList(amounts*ptr,int n, int times) {
+ 
+    for (times = 0; times < n; times++) {
+        FILE *fptr = fopen("list.txt", "a");
+
+        fptr = fopen("list.txt", "a");
+        fprintf(fptr, "%s expense : %.2f \n", ptr[times].name, ptr[times].expense);
+        
+        fclose(fptr);
+    } 
+}
 
 int main() {
 
@@ -17,11 +63,13 @@ int main() {
     int quantity;
     int i;
     int WriteNow;
+    int YesNo;
+    int YesNo2;
 
     FILE *fptr = fopen("list.txt", "wx");
     if (fptr == NULL) {
         
-        printf("No New Data file will be created due to existing.");
+        printf("No New Data file will be created due to existing. \n");
         fclose(fptr);
 
     } else {
@@ -36,96 +84,52 @@ int main() {
             scanf("%d", &quantity);
 
             amounts *ptr = malloc(quantity * sizeof(amounts));
-    
-            for (i = 0; i < quantity; i++)
-            {
-            printf("Enter %d Name :  ", i+1);
-            scanf("%s", ptr[i].name);
-
-            printf("Enter %d Expense : ", i+1);
-            scanf("%f", &ptr[i].expense);
-            }
-
-            for (i = 0; i < quantity; i++) {
-                FILE *fptr = fopen("list.txt", "a");
-
-                fptr = fopen("list.txt", "a");
-                fprintf(fptr, "%s expense : %.2f \n", ptr[i].name, ptr[i].expense);
-                
-                fclose(fptr);
-            }
+            
+            AddingNewList(ptr, quantity, i);
+            WritingNewList(ptr, quantity, i);
+            
         } else {
             printf("Oke\n");
         }
     }
 
     printf("What would you like to do \n");
-
-
     printf("Read The Existing Expense List : enter 1 \n");
     printf("Input New Expense : enter 2 \n ");
-    scanf(" %d", &mode);
+
+    scanf("%d", &mode);
 
     if (mode == 1)
     {
-    
-        char myString[200];
-        FILE *fptr = fopen("list.txt", "r");
+        ReadList();
+        printf("Would you like to clean it up?  \n");
+        printf("1 = Yes | 2 = No  \n");
+        scanf("%d \n", &YesNo2);
 
-        if (fptr == NULL){
-            printf("No Existing file to read.");
-            fclose(fptr);
+        if (YesNo2 == 1) {
+            CleanUp();
         } else {
-
-            while(fgets(myString, 200, fptr)) {
-                printf("%s \n", myString);
-            }
-            fclose(fptr);
+            printf("Procceding");
         }
-
-        
-
-    
-
     } 
     else {
+
+    printf("Would you like to clear previous data? (1 = Yes/ 2= N) \n");
+    scanf("%d", &YesNo);
+
+    if (YesNo == 1) {
+        CleanUp();
+    } else {
+        printf("Oke. Procceding. \n");
+    }
         
     printf("Provide The number of expense");
     scanf("%d", &quantity);
 
     amounts *ptr = malloc(quantity * sizeof(amounts));
-    
-    for (i = 0; i < quantity; i++)
-    {
-        printf("Enter %d Name : ", i+1);
-        scanf("%s", ptr[i].name);
-
-        printf("Enter %d Expense : ", i+1);
-        scanf("%f", &ptr[i].expense);
-    }
-
-    for (i = 0; i < quantity; i++) {
-        FILE *fptr = fopen("list.txt", "a");
-
-        fptr = fopen("list.txt", "a");
-        fprintf(fptr, "%s expense : %.2f \n", ptr[i].name, ptr[i].expense);
-        
-        fclose(fptr);
-    }
-    
-    char myString[200];
-    FILE *fptr = fopen("list.txt", "r");
-
-    while(fgets(myString, 200, fptr)) {
-        printf("%s \n", myString);
-    }
-
-
-    fclose(fptr);
-
-    
-    
-    
+    AddingNewList(ptr, quantity, i);
+    WritingNewList(ptr, quantity, i);
+    ReadList();
     free(ptr); 
 
     }
