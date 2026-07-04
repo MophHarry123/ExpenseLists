@@ -6,9 +6,12 @@
 -- Read out your stored data
 -- Can input the lists.
 
+[--Updates on 7/4/2026--]
+- involve functions for clarity 
+
 [--However--]
 
 - it does not have a feature to eidt specific rather than overwriting all
-- functions for readability and organization.
+
 
 Version : expenses.v1
